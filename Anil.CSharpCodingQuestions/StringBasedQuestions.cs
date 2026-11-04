@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Timers;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Anil.CSharpCodingQuestions
@@ -38,5 +39,100 @@ namespace Anil.CSharpCodingQuestions
 
     public class StringBasedQuestions
     {
+        //string is immutable, once string is created that can't be changable.
+        //It looks like we're modifying the same string, but internally C# creates a new string object every time.
+        //o(n2) Each iteration creates a new string and copies all existing characters plus the new character, so total copying is 1 + 2 + 3 + 4 + 5 = 15 for 5 characters; generally, \(1+2+\cdots+n = \frac{n(n+1)}{2}\), which gives O(n²) time complexity.
+        public void reverse_string(string @string)
+        {
+            string reverse = string.Empty;
+            for(int i = @string.Length - 1; i >= 0; i--)
+            {
+                reverse += @string[i];
+            }
+            Console.WriteLine(reverse);
+        }
+
+        //StringBuilder maintains a mutable character buffer.
+        //Append() generally adds characters without creating a new string every time.
+        //It expands its internal buffer when necessary.
+        public void optimize_reverse_string(string @string) 
+        { 
+            StringBuilder reverse = new StringBuilder();
+            for (int i = @string.Length - 1; i >= 0; i--) 
+            {
+                reverse.Append(@string[i]);
+            }
+            Console.WriteLine(reverse.ToString());
+        }
+        // END - REVERSE STRING
+
+        public void IsPolindrome(string @string) 
+        {
+            bool IsPolindrome = true;
+
+            for (int i = 0; i < @string.Length / 2; i++) 
+            { 
+                if( @string[i] != @string.Length - 1 - i)
+                {
+                    IsPolindrome = false;
+                    break;
+                }
+            }
+
+            Console.WriteLine(IsPolindrome ? "Polindrome" : "Not a Polindrome");
+        }
+
+        public void optimize_IsPolidrome(string @string)
+        {
+            bool isPolidrome = true;
+            int left = 0;
+            int right = @string.Length - 1;
+            while (left > right) 
+            { 
+                if( left != right)
+                {
+                    isPolidrome = false;
+                    break;
+                }
+            }
+            Console.WriteLine(isPolidrome ? "Polidrome" : "Not a Polidrome");
+
+        }
+        // END - Polindrome STRING
+
+
+        public void findDuplicatesCharInStringUsingLinQ(string @string)
+        {
+           var duplicates =  @string.GroupBy(ch => ch).Where(group => group.Count() > 1);
+
+            foreach (var group in duplicates)
+            {
+                Console.WriteLine($"{group.Key} = {group.Count()}");
+
+            }
+        }
+        public void findDuplicatesCharInStringUsingDic(string @string)
+        {
+           Dictionary<char, int> duplicates = new Dictionary<char, int>();
+           foreach (char c in @string)
+            {
+                if (duplicates.ContainsKey(c))
+                {
+                    duplicates[c]++;
+                }
+                else
+                {
+                    duplicates.Add(c, 1);
+                }
+            }
+            foreach (var item in duplicates)
+            {
+                if (item.Value > 1)
+                {
+                    Console.WriteLine($"{item.Key} = {item.Value}");
+                }
+            }
+        }
+        // END Find Duplicates char in string.
     }
 }
