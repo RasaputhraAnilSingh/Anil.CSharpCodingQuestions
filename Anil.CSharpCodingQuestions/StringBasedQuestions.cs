@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Text;
 using System.Timers;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -87,14 +88,17 @@ namespace Anil.CSharpCodingQuestions
             bool isPolidrome = true;
             int left = 0;
             int right = @string.Length - 1;
-            while (left > right) 
+            while (left < right) 
             { 
-                if( left != right)
+                if(@string[left] != @string[right])
                 {
                     isPolidrome = false;
                     break;
                 }
+                left++;
+                right--;
             }
+           
             Console.WriteLine(isPolidrome ? "Polidrome" : "Not a Polidrome");
 
         }
@@ -130,9 +134,87 @@ namespace Anil.CSharpCodingQuestions
                 if (item.Value > 1)
                 {
                     Console.WriteLine($"{item.Key} = {item.Value}");
+                   
                 }
             }
         }
         // END Find Duplicates char in string.
+
+
+        public void ReverseEachWordInaSentnece(string @string)
+        {
+            string[] array = @string.Split(" ");
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                char[] chars = array[i].ToCharArray();
+
+                int left = 0;
+                int right = chars.Length - 1;
+
+                while(left < right)
+                {
+                    char temp = chars[left];
+                    chars[left] = chars[right];
+                    chars[right] = temp;
+
+                    left++;
+                    right--;
+                }
+             
+
+                array[i] = new string(chars);
+            }
+
+            string result = string.Join(" ", array);
+
+            Console.WriteLine(result);
+        }
+
+        public void Optimize_ReverseEachWordInaSentnece(string @string)
+        {
+            string result = string.Join(" ",@string.Split(' ').Select(word => new string(word.Reverse().ToArray())));
+            Console.WriteLine(result);
+        }
+
+        //END Reverse each word in a sentences
+
+        public void First_Non_Repeatingcharcter(string @string)
+        {
+            Dictionary<char, int> keyValuePairs = new Dictionary<char, int>();
+            foreach(char a  in @string)
+            {
+                
+                    if (keyValuePairs.ContainsKey(a))
+                    {
+                        keyValuePairs[a]++;
+                    }
+                    else
+                    {
+                        keyValuePairs[a] = 1;
+                    }   
+                
+            }
+            
+            foreach(char a in @string)
+            {
+                if (keyValuePairs[a] == 1)
+                {
+                    Console.WriteLine($"{a}");
+                    break;
+                }
+            }
+          
+        }
+        public void Optimize_First_Non_Repeatingcharcter(string @string)
+        {
+            var result = @string.GroupBy(ch => ch).FirstOrDefault(g => g.Count() == 1);
+            if(result != null)
+            {
+                Console.WriteLine(result.Key);
+            }
+        }
+
+        //END Find non-repeating characters
     }
 }
